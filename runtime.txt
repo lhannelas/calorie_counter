@@ -1,1 +1,1 @@
-python-3.10.5git st
+python-3.10.5
