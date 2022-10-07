@@ -1,1 +1,1 @@
-web: gunicorn eatwell.wsgi
+web gunicorn eatwell.wsgi:application --log-file -
