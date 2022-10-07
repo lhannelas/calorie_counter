@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<nav id="navbar-primary" class="navbar navbar-expand-lg navbar-default active" role="navigation">
+
+    <!-- Brand and toggle get grouped for better mobile display -->
+
+ <div class="container">
+          <div class="navbar-header">
+            <!-- Brand and toggle get grouped for better mobile display -->
+          <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#resNav"  id='navbar-toggler'>
+            <span class="navbar-toggler-icon" id="ham"></span>
+          </button>
+        </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="resNav">
+            <ul class="navbar-nav justify-content-center">
+              {% with url_name=request.resolver_match.url_name %}
+              <li class="nav-item"><a class="nav-link  {% if url_name == 'home' %} active{% endif %}" href={% url "home" %}>Home</a></li>
+              <li class="nav-item"><a class="nav-link {% if url_name == 'profile' %} active{% endif %}" href={% url "profile" %}>Profile</a></li>
+              <li class="nav-item"><a class="nav-link {% if url_name == 'add_food' %} active{% endif %}" href={% url "add_food" %}>Add Food</a></li>
+              <li class="nav-item"><a class="nav-link {% if url_name == 'select_food' %} active{% endif %}" href={% url "select_food" %}>Select Food</a></li>
+              <li class="nav-item"><a class="nav-link {% if url_name == 'general' %} active{% endif %}" href={% url "general" %}>Info</a></li>
+              <li class="nav-item"><a class="nav-link {% if url_name == 'logout' %} active{% endif %}" href={% url "logout" %}>Log Out</a></li>
+              {% endwith %}
+            </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+
+ </div>
+</nav>
+<br>
+<br>
+<div class="container-fluid">
+    <h3 class="headline">Your Profile :</h3>
+        <div class="row mt-4 mb-4">
+            <div class="col-lg-5 card card-body">
+            <div class="app-title">
+                
+                <h5 class="text-center card-title mt-2">Name: {{ request.user }} </h5>
+
+            </div>
+
+            <form method="POST" action="" class="login-form pt-4">
+              {% csrf_token %}
+                {% for field in form %}
+                <h5 class="card-title" >Calorie Goal For Today</h5>
+                {{ field }}
+                {% endfor %}
+                <input class="btn login_btn profile-submit ml-3" type="submit" value="select">
+
+            </form>
+        </div>
+     
+        <div class="col-lg-7">
+        <h3 class="text-center headline pb-2">Records From Past Week</h3>
+        <table class="table text-center">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Calorie Consumed</th>
+                    <th scope="col">Calorie Goal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <td>{{ record.date }}</td>
+                    <td>{{ record.total_calorie }}</td>
+                    <td>{{ record.calorie_goal }}</td>
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>  
+    </div>
+     
+   
+     </div>
+
+    <h3 class="text-center headline">All Food Items</h3>
+
+     <div class="row mt-5">
+      <table class="table text-center">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Food Name</th>
+                    <th scope="col">Calories</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Update</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for food in food_items %}
+                <tr>
+                    <td>{{ food.name }}</td>
+                    <td>{{ food.calorie }}</td>
+                    <td>{{ food.quantity }}</td>
+                    <td><a class="btn btn-sm " href="{% url 'update_food' food.id %}">Update</a></td>
+                    <td><a class="btn btn-sm " href="{% url 'delete_food' food.id %}">Delete</a></td>
+
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>  
+    </div>
+</div>
+{% endblock content %}
